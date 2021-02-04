@@ -6,7 +6,7 @@ puts "Введите значение высоты треугольника:"
 height = gets.chomp.to_i
 
 #Вычисление площади треугольника
-area = (footing*height)/2
+area = ( footing * height ) / 2
 
 #Вывод значения площади треугольника
 puts "Площадь треугольника: #{area.round(2)}"

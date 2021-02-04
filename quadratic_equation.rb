@@ -10,12 +10,12 @@ c = gets.chomp.to_i
 puts "Находим корни уравнения: #{a}*x^2+(#{b})*x+(#{c})."
 
 # Находим дискриминант
-D = b*b-4*a*c
-
+D = b * b - 4 * a * c
 # Нахождение корней
 if D >= 0
-  x1 = (-b+Math.sqrt(D))/(2*a)
-  x2 = (-b-Math.sqrt(D))/(2*a)
+  sqrtD = Math.sqrt(D)
+  x1 = ( -b + sqrtD ) / ( 2 * a )
+  x2 = ( -b - sqrtD ) / ( 2 * a )
 end
 #Вывод, согласно условию задачи
 if D > 0
