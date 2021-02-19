@@ -1,19 +1,19 @@
 class Route
-  attr_accessor :stations, :first_station, :last_station
+  attr_reader :stations
 
   def initialize(first_station, last_station)
     @stations = [first_station, last_station]
   end
 
   def add_station(station)
-    self.stations.insert(-2, station)
+    @stations.insert(-2, station)
   end
 
   def delete_station(station)
     if [stations.first, stations.last].include?(station)
-     puts "Нельзя удалять первую и последнюю станцию маршрута."
+      puts "Нельзя удалять первую и последнюю станцию маршрута."
     else
-     stations.delete(station)
+      stations.delete(station)
     end
   end
 
