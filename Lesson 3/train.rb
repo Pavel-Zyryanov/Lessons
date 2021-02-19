@@ -1,6 +1,6 @@
 class Train
-  attr_accessor :speed, :number, :car_count, :route, :station
-  attr_reader :type
+  attr_accessor  :speed, :route, :current_station, :car_count
+  attr_reader :type, :number
 
   def initialize(number, type, car_count)
     @number = number
@@ -40,39 +40,46 @@ class Train
 
   def set_route(route)
     self.route = route
-    self.station = route.stations.first
-    station.get_train(self)
+    self.current_station = route.stations.first
+    self.current_station.get_train(self)
     puts "Поезду № #{number} задан маршрут #{route.stations.first.name} - #{route.stations.last.name}"
   end
 
-  def move_to_next_station
-    station_index = route.stations.index(station)
-    if (station_index + 1) != route.stations.size
-      station = route.stations[station_index + 1]
+  def current_station_index
+    return route.stations.index(current_station)
+  end
+
+  def next_station
+    if (current_station_index + 1) != route.stations.size
+      next_station = route.stations[current_station_index + 1]
+      return next_station
+    end
+  end
+
+  def previous_station
+    if current_station_index - 1 >= 0
+      previous_station = route.stations[current_station_index - 1]
+      return previous_station
+    end
+  end
+
+  def go_forward
+    if next_station
+      self.current_station.depart_train(self)
+      self.current_station = next_station
+      self.current_station.get_train(self)
     else
       puts "Вы находитесь на последней станции. Дальнейшее перемещение вперёд невозможно!"
     end
   end
 
-  def move_to_previous_station
-    station_index = route.stations.index(station)
-    if station_index - 1 >= 0
-      station = route.stations[station_index - 1]
+  def go_back
+    if previous_station
+      self.current_station.depart_train(self)
+      self.current_station = previous_station
+      self.current_station.get_train(self)
     else
       puts "Вы находитесь на первой станции. Дальнейшее перемещение назад невозможно!"
     end
   end
-
-  def go_forward
-    self.station.depart_train(self)
-    self.station = move_to_next_station
-    self.station.get_train(self)
-  end
-
-  def go_back
-    self.station.depart_train(self)
-    self.station = move_to_previous_station
-    self.station.get_train(self)
-  end
-
 end
