@@ -10,7 +10,7 @@ class Menu
     loop do
       puts "\nУважаемый пользователь, для выбора действия нужно ввести цифру команды из списка и нажать клавишу Enter на клавиатуре.\nДля выхода из программы введите 0.\n\nСписок команд:\n"
       puts "1. Создать станцию.\n2. Создать поезд.\n3. Создать маршрут.\n4. Изменить маршрут.\n5. Назначить маршрут поезду."
-      puts "6. Добавить вагон к поезду.\n7. Отцепить вагон от поезда.\n8. Переместить поезд: вперед или назад.\n9. Посмотреть список станций и список поездов на станции.\nВведите команду:" 
+      puts "6. Добавить вагон к поезду.\n7. Отцепить вагон от поезда.\n8. Переместить поезд: вперед или назад.\n9. Посмотреть список станций и список поездов на станции.\nВведите команду:"
       choice = gets.to_i
       case choice
       when 1
@@ -62,6 +62,26 @@ class Menu
     end
   end
 
+  def select_train(index)
+    train = @trains[index - 1]
+    return train
+  end
+
+  def select_station(index)
+    station = @stations[index - 1]
+    return station
+  end
+
+  def select_route(index)
+    route = @routes[index - 1]
+    return route
+  end
+
+  def select_car(index)
+    car = @cars[index - 1]
+    return car
+  end
+
   def create_station
     puts "Введите название станции:\n"
     station_name = gets.strip.capitalize
@@ -93,11 +113,11 @@ class Menu
     puts "Выберите начальную станцию:"
     all_stations_list
     index = gets.to_i
-    first_station = @stations[index - 1]
+    first_station = select_station(index)
     puts "Выберите конечную станцию:"
     all_stations_list
     index = gets.to_i
-    last_station = @stations[index - 1]
+    last_station = select_station(index)
     route = Route.new(first_station, last_station)
     @routes << route
   end
@@ -106,7 +126,7 @@ class Menu
     puts "Выберите маршрут для изменения:"
     all_routes_list
     index = gets.to_i
-    route = @routes[index - 1]
+    route = select_route(index)
     puts "1.Удалить станцию\n2.Добавить станцию"
     choice = gets.to_i
     case choice
@@ -121,7 +141,7 @@ class Menu
       puts "Какую станцию добавить в маршрут?"
       all_stations_list
       index = gets.to_i
-      station = @stations[index - 1]
+      station = select_station(index)
       route.add_station(station)
     end
   end
@@ -138,11 +158,11 @@ class Menu
     puts "Выберите поезд:"
     all_trains_list
     index = gets.to_i
-    train = @trains[index - 1]
+    train = select_train(index)
     puts "Выберите маршрут:"
     all_routes_list
     index = gets.to_i
-    route = @routes[index -1]
+    route = select_route(index)
     train.set_route(route)
   end
 
@@ -164,7 +184,7 @@ class Menu
     puts "Выберите поезд:"
     all_trains_list
     index = gets.to_i
-    train = @trains[index - 1]
+    train = select_train(index)
     puts "Создать вагон или выбрать из существующих?\n1.Создать новый\n2.Выбрать из существующих"
     index = gets.to_i
     case index
@@ -178,7 +198,7 @@ class Menu
         puts "Выберите нужный вагон"
         all_cars_list
         index = gets.to_i
-        car = @cars[index - 1]
+        car = select_car(index)
         train.add_car(car)
       end
     end
@@ -188,7 +208,7 @@ class Menu
     puts "Выберите поезд"
     all_trains_list
     index = gets.to_i
-    train = @trains[index - 1]
+    train = select_train(index)
     if @cars.empty? && train.cars == nil
       puts "Нет прицепленных вагонов."
     else
@@ -206,7 +226,7 @@ class Menu
     puts "Выберите поезд:"
     all_trains_list
     index = gets.to_i
-    train = @trains[index - 1]
+    train = select_train(index)
     puts "Выберите направление:\n1.Вперед\n2.Назад"
     direction = gets.to_i
     if direction == 1
@@ -225,7 +245,7 @@ class Menu
     else
       all_stations_list
       index = gets.to_i
-      station = @stations[index - 1]
+      station = select_station(index)
       if station.trains.empty?
         puts "На этой станции нет поездов."
       else
