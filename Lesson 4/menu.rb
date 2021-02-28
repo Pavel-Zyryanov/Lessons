@@ -62,24 +62,24 @@ class Menu
     end
   end
 
-  def select_train(index)
-    train = @trains[index - 1]
-    return train
+  def select_train
+    index = gets.to_i
+    @trains[index - 1]
   end
 
-  def select_station(index)
-    station = @stations[index - 1]
-    return station
+  def select_station
+    index = gets.to_i
+    @stations[index - 1]
   end
 
-  def select_route(index)
-    route = @routes[index - 1]
-    return route
+  def select_route
+    index = gets.to_i
+    @routes[index - 1]
   end
 
-  def select_car(index)
-    car = @cars[index - 1]
-    return car
+  def select_car
+    index = gets.to_i
+    @cars[index - 1]
   end
 
   def create_station
@@ -112,12 +112,10 @@ class Menu
     end
     puts "Выберите начальную станцию:"
     all_stations_list
-    index = gets.to_i
-    first_station = select_station(index)
+    first_station = select_station
     puts "Выберите конечную станцию:"
     all_stations_list
-    index = gets.to_i
-    last_station = select_station(index)
+    last_station = select_station
     route = Route.new(first_station, last_station)
     @routes << route
   end
@@ -125,8 +123,7 @@ class Menu
   def change_route
     puts "Выберите маршрут для изменения:"
     all_routes_list
-    index = gets.to_i
-    route = select_route(index)
+    route = select_route
     puts "1.Удалить станцию\n2.Добавить станцию"
     choice = gets.to_i
     case choice
@@ -140,8 +137,7 @@ class Menu
     when 2
       puts "Какую станцию добавить в маршрут?"
       all_stations_list
-      index = gets.to_i
-      station = select_station(index)
+      station = select_station
       route.add_station(station)
     end
   end
@@ -157,12 +153,10 @@ class Menu
     end
     puts "Выберите поезд:"
     all_trains_list
-    index = gets.to_i
-    train = select_train(index)
+    train = select_train
     puts "Выберите маршрут:"
     all_routes_list
-    index = gets.to_i
-    route = select_route(index)
+    route = select_route
     train.set_route(route)
   end
 
@@ -183,8 +177,7 @@ class Menu
   def add_car_to_train
     puts "Выберите поезд:"
     all_trains_list
-    index = gets.to_i
-    train = select_train(index)
+    train = select_train
     puts "Создать вагон или выбрать из существующих?\n1.Создать новый\n2.Выбрать из существующих"
     index = gets.to_i
     case index
@@ -197,8 +190,7 @@ class Menu
       else
         puts "Выберите нужный вагон"
         all_cars_list
-        index = gets.to_i
-        car = select_car(index)
+        car = select_car
         train.add_car(car)
       end
     end
@@ -207,8 +199,7 @@ class Menu
   def delete_car
     puts "Выберите поезд"
     all_trains_list
-    index = gets.to_i
-    train = select_train(index)
+    train = select_train
     if @cars.empty? && train.cars == nil
       puts "Нет прицепленных вагонов."
     else
@@ -225,8 +216,7 @@ class Menu
   def move_train
     puts "Выберите поезд:"
     all_trains_list
-    index = gets.to_i
-    train = select_train(index)
+    train = select_train
     puts "Выберите направление:\n1.Вперед\n2.Назад"
     direction = gets.to_i
     if direction == 1
@@ -244,8 +234,7 @@ class Menu
       puts "Список станций пуст."
     else
       all_stations_list
-      index = gets.to_i
-      station = select_station(index)
+      station = select_station
       if station.trains.empty?
         puts "На этой станции нет поездов."
       else
