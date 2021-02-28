@@ -38,46 +38,34 @@ class Menu
   end
 
   private
-  def all_stations_list
+  def all_stations_list_and_selection
     @stations.each.with_index(1) do |station, index|
       puts "#{index}. #{station.name}"
     end
-  end
-
-  def all_routes_list
-    @routes.each.with_index(1) do |route, index|
-      puts "#{index}. #{route.name}"
-    end
-  end
-
-  def all_trains_list
-    @trains.each.with_index(1) do |train, index|
-      puts "#{index}.Номер поезда - #{train.number}, тип - #{train.type}."
-    end
-  end
-
-  def all_cars_list
-    @cars.reject { |car| car.train == nil }.each.with_index(1) do |car, index|
-      puts "#{index}.id - #{car.id}, тип - #{car.type}."
-    end
-  end
-
-  def select_train
-    index = gets.to_i
-    @trains[index - 1]
-  end
-
-  def select_station
     index = gets.to_i
     @stations[index - 1]
   end
 
-  def select_route
+  def all_routes_list_and_selection
+    @routes.each.with_index(1) do |route, index|
+      puts "#{index}. #{route.name}"
+    end
     index = gets.to_i
     @routes[index - 1]
   end
 
-  def select_car
+  def all_trains_list_and_selection
+    @trains.each.with_index(1) do |train, index|
+      puts "#{index}.Номер поезда - #{train.number}, тип - #{train.type}."
+    end
+    index = gets.to_i
+    @trains[index - 1]
+  end
+
+  def all_cars_list_and_selection
+    @cars.reject { |car| car.train == nil }.each.with_index(1) do |car, index|
+      puts "#{index}.id - #{car.id}, тип - #{car.type}."
+    end
     index = gets.to_i
     @cars[index - 1]
   end
@@ -111,19 +99,16 @@ class Menu
       create_station
     end
     puts "Выберите начальную станцию:"
-    all_stations_list
-    first_station = select_station
+    first_station = all_stations_list_and_selection
     puts "Выберите конечную станцию:"
-    all_stations_list
-    last_station = select_station
+    last_station = all_stations_list_and_selection
     route = Route.new(first_station, last_station)
     @routes << route
   end
 
   def change_route
     puts "Выберите маршрут для изменения:"
-    all_routes_list
-    route = select_route
+    route = all_routes_list_and_selection
     puts "1.Удалить станцию\n2.Добавить станцию"
     choice = gets.to_i
     case choice
@@ -136,8 +121,7 @@ class Menu
       route.delete_station(station)
     when 2
       puts "Какую станцию добавить в маршрут?"
-      all_stations_list
-      station = select_station
+      station = all_stations_list_and_selection
       route.add_station(station)
     end
   end
@@ -152,11 +136,9 @@ class Menu
       create_route
     end
     puts "Выберите поезд:"
-    all_trains_list
-    train = select_train
+    train = all_trains_list_and_selection
     puts "Выберите маршрут:"
-    all_routes_list
-    route = select_route
+    route = all_routes_list_and_selection
     train.set_route(route)
   end
 
@@ -176,8 +158,7 @@ class Menu
 
   def add_car_to_train
     puts "Выберите поезд:"
-    all_trains_list
-    train = select_train
+    train = all_trains_list_and_selection
     puts "Создать вагон или выбрать из существующих?\n1.Создать новый\n2.Выбрать из существующих"
     index = gets.to_i
     case index
@@ -189,8 +170,7 @@ class Menu
         puts "Нет ни одного вагона"
       else
         puts "Выберите нужный вагон"
-        all_cars_list
-        car = select_car
+        car = all_cars_list_and_selection
         train.add_car(car)
       end
     end
@@ -198,8 +178,7 @@ class Menu
 
   def delete_car
     puts "Выберите поезд"
-    all_trains_list
-    train = select_train
+    train = all_trains_list_and_selection
     if @cars.empty? && train.cars == nil
       puts "Нет прицепленных вагонов."
     else
@@ -215,8 +194,7 @@ class Menu
 
   def move_train
     puts "Выберите поезд:"
-    all_trains_list
-    train = select_train
+    train = all_trains_list_and_selection
     puts "Выберите направление:\n1.Вперед\n2.Назад"
     direction = gets.to_i
     if direction == 1
@@ -233,8 +211,7 @@ class Menu
     if @stations.empty?
       puts "Список станций пуст."
     else
-      all_stations_list
-      station = select_station
+      station = all_stations_list_and_selection
       if station.trains.empty?
         puts "На этой станции нет поездов."
       else
