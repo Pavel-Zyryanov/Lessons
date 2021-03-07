@@ -15,11 +15,7 @@ class Train
   end
 
   def self.find(number)
-    if @@trains[number].nil?
-      nil
-    else
       @@trains[number]
-    end
   end
 
   def speed_up(speed)
