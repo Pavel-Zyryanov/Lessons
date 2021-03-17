@@ -21,7 +21,7 @@ class Train
       @@trains[number]
   end
 
-  def list_cars
+  def each_cars
     @cars.each do |car|
       yield(car)
     end
