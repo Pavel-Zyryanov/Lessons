@@ -29,7 +29,7 @@ class Station
     end
   end
 
-  def list_trains
+  def each_trains
    @trains.each do |train|
      yield(train)
    end
