@@ -8,8 +8,8 @@ class CargoCar < Car
     @free_volume = volume
   end
 
-  def load_volume(volume)
-    @free_volume -= volume
+  def take_place(volume)
+    @free_volume -= volume if (@free_volume - volume) >= 0
   end
 
   def occupied_volume
