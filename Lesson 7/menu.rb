@@ -181,8 +181,8 @@ class Menu
       type = gets.to_i
       if type == 1
         puts "Введите общее количество мест в вагоне:"
-        number_seats = gets.to_i
-        car = PassengerCar.new(id, number_seats)
+        place = gets.to_i
+        car = PassengerCar.new(id, place)
       else
         puts "Введите общий объем вагона:"
         volume = gets.to_i
@@ -269,7 +269,7 @@ class Menu
       if train.cars.empty?
         puts "У этого поезда нет вагонов."
       else
-        train.each_cars { |car| puts "ID вагона: #{car.id}, тип: #{car.type}, #{car.type == 'Passenger' ? "Свободных мест: #{car.free_seats}, Занятых мест: #{car.occupied_seats}" : "Свободный объем: #{car.free_volume}, Занятый объем: #{car.occupied_volume}"}" }
+        train.each_cars { |car| puts "ID вагона: #{car.id}, тип: #{car.type}, #{car.type == 'Passenger' ? "Свободных мест: #{car.free_place}, Занятых мест: #{car.occupied_place}" : "Свободный объем: #{car.free_place}, Занятый объем: #{car.occupied_place}"}" }
       end
     end
   end
@@ -280,23 +280,23 @@ class Menu
     puts "Вы выбрали #{train.type} поезд. Выберите вагон, чтобы занять место / объем:"
     car = cars_list_and_select(train)
     if (car.type == 'Passenger')
-      puts "Доступное количество мест: #{car.free_seats}"
+      puts "Доступное количество мест: #{car.free_place}"
       puts "Занимаем одно место в пассажирском вагоне."
-      if car.free_seats == 0
+      if car.free_place == 0
         puts "Ошибка. Свободных мест в вагоне нет."
       else
         car.take_place
-        puts "Было занято одно место, осталось мест: #{car.free_seats}"
+        puts "Было занято одно место, осталось мест: #{car.free_place}"
       end
     else
-      puts "Доступный объем вагона: #{car.free_volume}"
+      puts "Доступный объем вагона: #{car.free_place}"
       puts "Введите объем, который необходимо занять в вагоне:"
       volume = gets.to_f
-      if (car.free_volume - volume) < 0
+      if (car.free_place - volume) < 0
         puts "Ошибка. Объем больше допустимого (суммарного) объема вагона."
       else
         car.take_place(volume)
-        puts "Был занят объем - #{volume}, осталось - #{car.free_volume}"
+        puts "Был занят объем - #{volume}, осталось - #{car.free_place}"
       end
     end
   end
