@@ -80,29 +80,6 @@ class Menu
     car = train.cars[index - 1]
   end
 
-  def select_place(car)
-    puts "Занять одно место в пассажирском вагоне / занять объем грузового вагона? \n Введите (0 для занятия пассажирского места или введите Объем вагона)"
-    puts "Доступный объем вагона: #{car.free_volume}" if car.type == 'Cargo'
-    puts "Доступное количество мест: #{car.free_seats}" if car.type == 'Passenger'
-    choice = gets.to_i
-    if (choice == 0) && (car.type == 'Passenger')
-      if car.free_seats > 0
-        car.take_seat
-        puts "Было занято одно место, осталось #{car.free_seats}"
-      else
-        puts "Свободных мест в вагоне нет."
-      end
-    else
-      volume = choice
-      if (car.free_volume - volume) > 0
-        car.load_volume(volume)
-        puts "Был занят объем - #{volume}, осталось - #{car.free_volume}"
-      else
-        puts "Объем больше допустимого (суммарного) объема вагона."
-      end
-    end
-  end
-
   def create_station
     attempts = 0
     begin
@@ -302,6 +279,25 @@ class Menu
     train = all_trains_list_and_selection
     puts "Вы выбрали #{train.type} поезд. Выберите вагон, чтобы занять место / объем:"
     car = cars_list_and_select(train)
-    select_place(car)
+    if (car.type == 'Passenger')
+      puts "Доступное количество мест: #{car.free_seats}"
+      puts "Занимаем одно место в пассажирском вагоне."
+      if car.free_seats == 0
+        puts "Ошибка. Свободных мест в вагоне нет."
+      else
+        car.take_place
+        puts "Было занято одно место, осталось мест: #{car.free_seats}"
+      end
+    else
+      puts "Доступный объем вагона: #{car.free_volume}"
+      puts "Введите объем, который необходимо занять в вагоне:"
+      volume = gets.to_f
+      if (car.free_volume - volume) < 0
+        puts "Ошибка. Объем больше допустимого (суммарного) объема вагона."
+      else
+        car.take_place(volume)
+        puts "Был занят объем - #{volume}, осталось - #{car.free_volume}"
+      end
+    end
   end
 end
