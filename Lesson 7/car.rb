@@ -19,6 +19,10 @@ class Car
     @place - @occupied_place
   end
 
+  def take_place(place)
+    @occupied_place += place if free_place >= place
+  end
+
   protected
 
     def validate!
