@@ -8,8 +8,8 @@ class PassengerCar < Car
     @number_free_seats = number_seats
   end
 
-  def take_seat
-    @number_free_seats -= 1
+  def take_place
+    @number_free_seats -= 1 if @number_free_seats > 0
   end
 
   def occupied_seats
