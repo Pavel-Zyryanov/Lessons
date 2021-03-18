@@ -6,6 +6,6 @@ class PassengerCar < Car
   end
 
   def take_place
-    @occupied_place += 1 if @place - @occupied_place > 0
+    super(1)
   end
 end
