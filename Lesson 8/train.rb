@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Train
   attr_accessor :speed, :route, :current_station
   attr_reader :type, :number, :cars
@@ -7,7 +9,7 @@ class Train
   include Valid
   @@trains = {}
 
-  NUMBER_FORMAT = /[a-z0-9]{3}-?[a-z0-9]{2}$/i
+  NUMBER_FORMAT = /[a-z0-9]{3}-?[a-z0-9]{2}$/i.freeze
 
   def initialize(number)
     @number = number
@@ -44,7 +46,7 @@ class Train
   end
 
   def delete_car(car)
-    if speed == 0
+    if speed.zero?
       car.train = nil
       @cars.delete(car)
     else
@@ -52,7 +54,7 @@ class Train
     end
   end
 
-  def set_route(route)
+  def take_route(route)
     self.route = route
     self.current_station = route.stations.first
     current_station.get_train(self)
@@ -80,9 +82,6 @@ class Train
   end
 
   private
-
-  # В данном классе можно вынести в private данные методы: current_station_index, next_station, previous_station.
-  #  Причина отнесения в private - отсутствие внешних вызовов.
 
   def current_station_index
     route.stations.index(current_station)
