@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Station
   attr_reader :name, :trains
 
@@ -5,7 +7,7 @@ class Station
   @@stations = []
   include Valid
 
-  NAME_FORMAT = /^[а-яa-z]+\s?[а-яa-z]*$/i
+  NAME_FORMAT = /^[а-яa-z]+\s?[а-яa-z]*$/i.freeze
 
   def initialize(name)
     @name = name
@@ -62,6 +64,6 @@ class Station
   end
 
   def validate_station_exist
-    raise 'Станция с таким названием уже существует' if @@stations.map { |station| station.name }.include?(@name)
+    raise 'Станция с таким названием уже существует' if @@stations.map(&:name).include?(@name)
   end
 end
