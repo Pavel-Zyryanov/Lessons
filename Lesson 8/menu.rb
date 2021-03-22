@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Menu
   def initialize
     @stations = []
@@ -9,7 +11,7 @@ class Menu
       '2' => :create_train,
       '3' => :create_route,
       '4' => :change_route,
-      '5' => :set_route_to_train,
+      '5' => :take_route_to_train,
       '6' => :add_car_to_train,
       '7' => :delete_car,
       '8' => :move_train,
@@ -23,26 +25,26 @@ class Menu
   def start_menu
     loop do
       puts "\nУважаемый пользователь, для выбора действия нужно ввести цифру команды из списка и нажать клавишу Enter."
-      puts "Список команд: "
+      puts 'Список команд: '
       puts [
-      '1. Создать станцию',
-      '2. Создать поезд',
-      '3. Создать маршрут',
-      '4. Изменить маршрут',
-      '5. Назначить маршрут поезду',
-      '6. Добавить вагон к поезду',
-      '7. Отцепить вагон от поезда',
-      '8. Переместить поезд: вперед или назад',
-      '9. Посмотреть список станций и список поездов на станции',
-      '10. Занять место или объем в вагоне',
-      '0. Выход'
+        '1. Создать станцию',
+        '2. Создать поезд',
+        '3. Создать маршрут',
+        '4. Изменить маршрут',
+        '5. Назначить маршрут поезду',
+        '6. Добавить вагон к поезду',
+        '7. Отцепить вагон от поезда',
+        '8. Переместить поезд: вперед или назад',
+        '9. Посмотреть список станций и список поездов на станции',
+        '10. Занять место или объем в вагоне',
+        '0. Выход'
       ]
-      puts "Введите команду:"
+      puts 'Введите команду:'
       choice = gets.chomp
       if @menu_options[choice]
-         send @menu_options[choice]
+        send @menu_options[choice]
       else
-        puts "Ошибка, повторите ввод команды правильно."
+        puts 'Ошибка, повторите ввод команды правильно.'
       end
     end
   end
@@ -86,7 +88,7 @@ class Menu
       puts "#{index}. id вагона - #{car.id}, тип вагона - #{car.type}"
     end
     index = gets.to_i
-    car = train.cars[index - 1]
+    train.cars[index - 1]
   end
 
   def create_station
@@ -165,7 +167,7 @@ class Menu
     end
   end
 
-  def set_route_to_train
+  def take_route_to_train
     if @trains.empty?
       puts 'Нет ни одного поезда, создайте поезд!'
       create_train
@@ -178,7 +180,7 @@ class Menu
     train = all_trains_list_and_selection
     puts 'Выберите маршрут:'
     route = all_routes_list_and_selection
-    train.set_route(route)
+    train.take_route(route)
   end
 
   def create_new_car
@@ -265,13 +267,8 @@ class Menu
         puts 'Список станций пуст.'
       else
         station = all_stations_list_and_selection
-        if station.trains.empty?
-          puts 'На этой станции нет поездов.'
-        else
-          station.each_trains do |train|
-            puts "Номер поезда - #{train.number}, тип - #{train.type}, кол-во вагонов - #{train.cars.size}"
-          end
-        end
+        puts 'На этой станции нет поездов.' if station.trains.empty?
+        station.each_trains { |train| puts "Номер поезда - #{train.number}, тип - #{train.type}, кол-во вагонов - #{train.cars.size}" }
       end
     when 2
       puts "Список всех поездов.\nВыберите вагон для просмотра дополнительной информации:"
@@ -279,9 +276,7 @@ class Menu
       if train.cars.empty?
         puts 'У этого поезда нет вагонов.'
       else
-        train.each_cars do |car|
-          puts "ID вагона: #{car.id}, тип: #{car.type}, #{car.type == 'Passenger' ? "Свободных мест: #{car.free_place}, Занятых мест: #{car.occupied_place}" : "Свободный объем: #{car.free_place}, Занятый объем: #{car.occupied_place}"}"
-        end
+        train.each_cars { |car| puts "ID вагона: #{car.id}, тип: #{car.type}, #{car.type == 'Passenger' ? "Свободных мест: #{car.free_place}, Занятых мест: #{car.occupied_place}" : "Свободный объем: #{car.free_place}, Занятый объем: #{car.occupied_place}"}" }
       end
     end
   end
