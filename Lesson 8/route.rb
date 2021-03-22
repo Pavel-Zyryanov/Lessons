@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Route
   attr_reader :stations
 
@@ -13,7 +15,7 @@ class Route
   end
 
   def name
-    @name = stations.first.name + ' - ' + stations.last.name
+    @name = "#{stations.first.name} - #{stations.last.name}"
   end
 
   def add_station(station)
@@ -41,6 +43,6 @@ class Route
   end
 
   def validate_route_exist
-    raise 'Такой маршрут уже существует' if @@routes.map { |route| route.stations }.include?(@stations)
+    raise 'Такой маршрут уже существует' if @@routes.map(&:stations).include?(@stations)
   end
 end
