@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'menu'
 require_relative 'manufacturer'
 require_relative 'valid'
