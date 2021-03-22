@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Car
   attr_reader :id, :type, :place, :occupied_place
   attr_accessor :train
@@ -6,7 +8,7 @@ class Car
   include Valid
   @@cars = {}
 
-  CAR_ID_FORMAT = /[0-9]{2}-[0-9]{3}$/i
+  CAR_ID_FORMAT = /[0-9]{2}-[0-9]{3}$/i.freeze
 
   def initialize(id, place)
     @id = id
