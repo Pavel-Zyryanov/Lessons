@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PassengerCar < Car
   def initialize(id, place)
     super(id, place)
