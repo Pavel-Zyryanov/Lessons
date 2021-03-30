@@ -7,11 +7,14 @@ class Train
   include Manufacturer
   include InstanceCounter
   include Validation
+  include Accessors
   @@trains = {}
 
   NUMBER_FORMAT = /[a-z0-9]{3}-?[a-z0-9]{2}$/i.freeze
 
-  validate :number, presence: true, format: NUMBER_FORMAT
+  validate :number, :type, String
+  validate :number, :presence
+  validate :number, :format, NUMBER_FORMAT
 
   def initialize(number)
     @number = number
