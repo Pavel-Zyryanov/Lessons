@@ -7,27 +7,43 @@ module Validation
   end
 
   module ClassMethods
-    def validate(name, options = {})
-      define_method(:validate!) do
-        attr = instance_variable_get("@#{name}".to_sym)
-        raise 'Значение атрибута nil или пустая строка' if options[:presence] && attr.nil? || attr == ''
-        if options[:format] && attr.to_s !~ options[:format]
-          raise 'Значение атрибута не соответствует заданному формату'
-        end
-        raise 'Значение атрибута не соответствует заданному классу' if options[:type] && !attr.is_a?(options[:type])
+    attr_reader :attributes
 
-        true
-      end
+    def validate(name, *args)
+      @attributes ||= []
+      @attributes << { name => args }
     end
   end
 
   module InstanceMethods
-    define_method(:valid?) do
-      begin
-        validate!
-      rescue StandardError
-        false
+    def validate!
+      self.class.attributes.each do |na|
+        na.each do |name, args|
+          attr = instance_variable_get("@#{name}")
+          send "validate_#{args[0]}", attr, *args[1]
+        end
       end
+      true
+    end
+
+    def valid?
+      validate!
+    rescue RuntimeError
+      false
+    end
+
+    private
+
+    def validate_presence(attr)
+      raise 'Значение атрибута nil или пустая строка' if attr.nil? || attr.empty?
+    end
+
+    def validate_format(attr, format)
+      raise 'Значение атрибута не соответствует заданному формату' if attr !~ format
+    end
+
+    def validate_type(attr, type)
+      raise 'Значение атрибута не соответствует заданному классу' unless attr.is_a? type
     end
   end
 end
