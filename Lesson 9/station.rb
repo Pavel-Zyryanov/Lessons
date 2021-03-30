@@ -9,7 +9,8 @@ class Station
 
   NAME_FORMAT = /^[а-яa-z]+\s?[а-яa-z]*$/i.freeze
 
-  validate :name, presence: true, format: NAME_FORMAT
+  validate :name, :presence
+  validate :name, :format, NAME_FORMAT
 
   def initialize(name)
     @name = name
