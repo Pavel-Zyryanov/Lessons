@@ -9,19 +9,18 @@ module Validation
   module ClassMethods
     attr_reader :attributes
 
-    def validate(name, *args)
+    def validate(name, type, *args)
       @attributes ||= []
-      @attributes << { name => args }
+      @attributes << { name: name, type: type, options: args }
     end
   end
 
   module InstanceMethods
     def validate!
-      self.class.attributes.each do |na|
-        na.each do |name, args|
-          attr = instance_variable_get("@#{name}")
-          send "validate_#{args[0]}", attr, *args[1]
-        end
+      attributes = self.class.attributes
+      attributes.each do  |attribute|
+        attribute_value = instance_variable_get("@#{attribute[:name]}")
+        send(attribute[:type], attribute[:name], attribute_value, attribute[:options])
       end
       true
     end
@@ -34,16 +33,16 @@ module Validation
 
     private
 
-    def validate_presence(attr)
-      raise 'Значение атрибута nil или пустая строка' if attr.nil? || attr.empty?
+    def presence(_name, attribute_value, _args = nil)
+      raise 'Значение атрибута nil или пустая строка' if attribute_value.nil? || attribute_value.empty?
     end
 
-    def validate_format(attr, format)
-      raise 'Значение атрибута не соответствует заданному формату' if attr !~ format
+    def format(_name, attribute_value, format)
+      raise 'Значение атрибута не соответствует заданному формату' if attribute_value !~ format[0]
     end
 
-    def validate_type(attr, type)
-      raise 'Значение атрибута не соответствует заданному классу' unless attr.is_a? type
+    def type(_name, attribute_value, type)
+      raise 'Значение атрибута не соответствует заданному классу' unless attribute_value != type[0]
     end
   end
 end
