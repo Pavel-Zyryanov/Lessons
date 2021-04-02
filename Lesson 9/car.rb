@@ -10,9 +10,7 @@ class Car
 
   CAR_ID_FORMAT = /[0-9]{2}-[0-9]{3}$/i.freeze
 
-  validate :id, :presence
-  validate :id, :format, CAR_ID_FORMAT
-  validate :id, :type, String
+  validate :id, :type, CAR_ID_FORMAT
 
   def initialize(id, place)
     @id = id
