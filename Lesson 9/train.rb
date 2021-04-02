@@ -7,12 +7,13 @@ class Train
   include Manufacturer
   include InstanceCounter
   include Validation
-  include Accessors
+  extend Accessors
+  attr_accessors_with_history :first
+  strong_attr_accessor(:string_one, String)
   @@trains = {}
 
   NUMBER_FORMAT = /[a-z0-9]{3}-?[a-z0-9]{2}$/i.freeze
 
-  validate :number, :type, String
   validate :number, :presence
   validate :number, :format, NUMBER_FORMAT
 
